@@ -782,7 +782,6 @@ _skn_code_antihack = compileFinal ("
 		disableSerialization;
 		_ActionCount = -1;
 		_ActionVehicle = player;
-		_displayCount = 0;
 		_personalToken = Epoch_personalToken;
 		_antiWallCount = 0;
 		waitUntil{!isNull (findDisplay 46)};
@@ -859,11 +858,18 @@ _skn_code_antihack = compileFinal ("
 			_display = findDisplay 46;
 			if !(isNull _display) then {
 				{
-					_display displayRemoveAllEventHandlers _x;
-					_addCase = _display displayAddEventHandler [_x,([""CfgEpochClient"", _x, """"] call EPOCH_fnc_returnConfigEntryV2)];
-					if (_addCase != _displayCount) then {
-						[format['DEH: %3 %1/%2',_addCase,_displayCount,_x],0] call "+_sknBanANDSleep+";
+					private _key = _x;
+					private _list = [_key];
+					if (isClass (configFile >> 'CfgPatches' >> 'cba_events')) then {
+						_list pushBack format['%1_cba',_key];
 					};
+					_display displayRemoveAllEventHandlers _key;
+					{
+						_addCase = _display displayAddEventHandler[_key,([""CfgEpochClient"", _x, """"] call EPOCH_fnc_returnConfigEntryV2)];
+						if (_addCase != _forEachIndex) then {
+							[format['DEH: %3 %1/%2',_addCase,_forEachIndex,_key],0] call "+_sknBanANDSleep+";
+						};
+					} forEach _list;
 				} forEach (['CfgEpochClient', 'displayAddEventHandler', []] call EPOCH_fnc_returnConfigEntryV2);
 			};
 			uiSleep ((random 1)+1);
