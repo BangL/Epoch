@@ -178,6 +178,8 @@ class CfgEpochClient
 	displayAddEventHandler[] = {"keyDown","keyUp"};
 	keyDown = "(_this call EPOCH_KeyDown)";
 	keyUp   = "(_this call EPOCH_KeyUp)";
+	keyDown_cba = "(_this call CBA_events_fnc_keyHandlerDown)";
+	keyUp_cba   = "(_this call CBA_events_fnc_keyHandlerUp)";
 	addEventHandler[] = {"Respawn","Put","Take","InventoryClosed","InventoryOpened","Fired","Killed","HandleRating","GetInMan","GetOutMan"};
 	Respawn = "(_this select 0) call EPOCH_clientRespawn";
 	Put = "(_this select 1) call EPOCH_interact;_this call EPOCH_PutHandler";
